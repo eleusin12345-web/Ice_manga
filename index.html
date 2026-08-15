@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AnimeWeb - Смотреть аниме</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- HLS.js Библиотека для просмотра .m3u8 -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Nunito', 'sans-serif'] },
+                    colors: {
+                        zinc: { 850: '#1f1f22', 900: '#18181b', 950: '#09090b', 800: '#1f2937' },
+                        primary: { 500: '#8b5cf6', 600: '#7c3aed' },
+                        accent: { 500: '#10b981', 600: '#059669' }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'slide-up': 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #09090b;
+            color: #f4f4f5;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 100vh;
+            padding-bottom: 90px;
+        }
+        
+        .no-scroll { overflow: hidden; }
+        .smooth-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .modal-content-anim { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+        
+        .nav-item.active { color: #8b5cf6; }
+        .nav-item.active .nav-icon-wrapper { background-color: rgba(139, 92, 246, 0.15); transform: translateY(-2px); }
+        
+        .card-hover:active { transform: scale(0.95); }
+        @media (hover: hover) { .card-hover:hover { transform: translateY(-4px); } }
+        
+        .stat-donut { background: conic-gradient(#3f3f46 100%); border-radius: 50%; transition: background 0.5s ease; }
+
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-4 { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden select-none">
+
+    <!-- ГЛОБАЛЬНЫЙ TOAST -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[200] bg-zinc-800 text-white px-6 py-3 rounded-full shadow-lg font-bold flex items-center gap-3 text-sm opacity-0 pointer-events-none transform -translate-y-10 smooth-transition border border-zinc-700">
+        <i id="toast-icon" class="fa-solid fa-bell"></i>
+        <span id="toast-msg">Уведомление</span>
+    </div>
+
+    <!-- ВЕРХНЯЯ ШАПКА -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-zinc-950/90 backdrop-blur-xl border-b border-zinc-800/80 h-14 flex items-center justify-between px-3 sm:px-4 shadow-sm">
+        <div class="flex items-center gap-3">
+            <!-- КНОПКА ПЕРЕХОДА К МАНГЕ -->
+            <a href="https://eleusin12345-web.github.io/Ice-manga/" class="group relative flex items-center gap-2 bg-gradient-to-r from-zinc-900 to-zinc-950 border border-zinc-800 hover:border-primary-500/50 pr-3 sm:pr-4 pl-1 py-1 rounded-full smooth-transition shadow-md overflow-hidden">
+                <div class="absolute inset-0 bg-primary-500/10 translate-x-[-100%] group-hover:translate-x-0 smooth-transition"></div>
+                <div class="relative w-7 h-7 rounded-full bg-zinc-800 group-hover:bg-primary-600 flex items-center justify-center text-zinc-400 group-hover:text-white smooth-transition shadow-inner">
+                    <i class="fa-solid fa-book-open text-[10px]"></i>
+                </div>
+                <span class="relative text-[10px] sm:text-xs font-black text-zinc-300 group-hover:text-white tracking-wider uppercase smooth-transition">Манга</span>
+            </a>
+            
+            <div class="h-4 w-px bg-zinc-800 hidden sm:block"></div> <!-- Разделитель -->
+            
+            <span class="font-black text-base sm:text-lg tracking-tight text-white hidden sm:flex items-center gap-1">
+                Anime<span class="text-primary-500">PRO</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-4 text-zinc-400">
+            <button onclick="window.switchView('search')" class="hover:text-white"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button class="hover:text-white" onclick="window.showToast('Уведомлений нет', 'fa-bell')"><i class="fa-solid fa-bell"></i></button>
+        </div>
+    </header>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main id="app-content" class="pt-16 px-4 max-w-4xl mx-auto min-h-screen">
+        
+        <!-- 1. ГЛАВНАЯ СТРАНИЦА -->
+        <section id="view-home" class="view-section animate-fade-in block">
+            <div class="flex gap-4 mb-4 border-b border-zinc-800/80 pb-2">
+                <button class="font-black text-white border-b-2 border-primary-500 pb-1">Аниме</button>
+                <button class="font-black text-zinc-500 hover:text-zinc-300 pb-1" onclick="window.showToast('Скоро', 'fa-clock')">Дунхуа</button>
+                <button class="font-black text-zinc-500 hover:text-zinc-300 pb-1" onclick="window.showToast('Скоро', 'fa-clock')">Последние</button>
+            </div>
+            
+            <div id="home-empty" class="hidden flex-col items-center justify-center text-zinc-500 py-20">
+                <i class="fa-solid fa-ghost text-4xl mb-4"></i>
+                <p class="font-black text-lg">Каталог аниме пуст</p>
+            </div>
+
+            <div id="home-list" class="flex flex-col gap-4">
+                <!-- Карточки -->
+            </div>
+        </section>
+
+        <!-- 2. СТРАНИЦА ПОИСКА -->
+        <section id="view-search" class="view-section animate-fade-in hidden">
+            <div class="relative mb-6">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500"></i>
+                <input type="text" id="search-input" oninput="window.doSearch()" placeholder="Поиск аниме..." class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl py-4 pl-12 pr-4 text-white font-bold outline-none focus:border-primary-500 smooth-transition shadow-inner">
+                <button onclick="document.getElementById('search-input').value=''; window.doSearch()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <h3 class="font-black text-zinc-400 text-sm uppercase tracking-widest mb-4">Результаты</h3>
+            <div id="search-results" class="flex flex-col gap-4"></div>
+            <div id="search-empty" class="hidden text-center text-zinc-500 py-10 font-bold">Ничего не найдено</div>
+        </section>
+
+        <!-- 3. ЗАКЛАДКИ -->
+        <section id="view-bookmarks" class="view-section animate-fade-in hidden flex flex-col h-full">
+            <h2 class="text-2xl font-black text-white mb-4">Мои списки</h2>
+            <div class="flex gap-2 overflow-x-auto hide-scroll pb-2 mb-4 border-b border-zinc-800/80" id="bookmarks-tabs"></div>
+            <div id="bookmarks-list" class="flex flex-col gap-3"></div>
+            <div id="bookmarks-empty" class="hidden flex-col items-center justify-center text-zinc-500 py-20 bg-zinc-900/50 rounded-3xl border border-zinc-800/50 border-dashed mt-4">
+                <i class="fa-solid fa-folder-open text-4xl mb-3 opacity-50"></i>
+                <p class="font-bold">В этом списке пока ничего нет</p>
+            </div>
+        </section>
+
+        <!-- 4. СТРАНИЦА ТАЙТЛА -->
+        <section id="view-details" class="view-section animate-slide-up hidden">
+            <button onclick="window.switchView('home')" class="mb-4 text-zinc-400 hover:text-white flex items-center gap-2 text-sm bg-zinc-900 py-2 px-4 rounded-full border border-zinc-800 w-fit">
+                <i class="fa-solid fa-arrow-left"></i> Назад
+            </button>
+            
+            <div class="relative rounded-3xl overflow-hidden bg-zinc-900 border border-zinc-800/50 mb-6 shadow-2xl">
+                <div class="absolute inset-0 z-0 opacity-20 blur-xl">
+                    <img id="det-bg" src="" class="w-full h-full object-cover">
+                </div>
+                
+                <div class="relative z-10 flex gap-4 p-4 sm:p-6 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent">
+                    <img id="det-cover" src="" class="w-28 sm:w-36 rounded-xl object-cover shadow-lg border border-zinc-700/50 aspect-[2/3]" onerror="this.src='https://via.placeholder.com/300x450/18181b/ffffff?text=Нет+фото'">
+                    <div class="flex flex-col justify-end flex-1">
+                        <h1 id="det-title" class="text-xl sm:text-2xl font-black text-white leading-tight mb-2">Название</h1>
+                        <div class="flex items-center gap-2 text-xs font-bold text-zinc-300 mb-2 flex-wrap">
+                            <span class="bg-primary-600 px-2 py-1 rounded-md text-white shadow"><i class="fa-solid fa-star text-[10px]"></i> <span id="det-rating">0.0</span></span>
+                            <span id="det-status" class="text-primary-400">Онгоинг</span>
+                            <span class="text-zinc-500"><i class="fa-solid fa-eye"></i> <span id="det-views">0</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 px-4 sm:px-6 pb-6 space-y-4">
+                    <div class="flex gap-2">
+                        <button onclick="window.openWatchModal()" class="flex-1 bg-white text-black hover:bg-zinc-200 font-black py-3 rounded-xl flex items-center justify-center gap-2 smooth-transition active:scale-95 shadow-lg shadow-white/10">
+                            <i class="fa-solid fa-play"></i> Воспроизвести
+                        </button>
+                        <button onclick="window.showModal('modal-bookmark')" class="w-14 bg-zinc-800 hover:bg-zinc-700 text-white font-black py-3 rounded-xl flex items-center justify-center smooth-transition active:scale-95 border border-zinc-700">
+                            <i class="fa-solid fa-bookmark" id="btn-bookmark-icon"></i>
+                        </button>
+                    </div>
+
+                    <div class="text-sm text-zinc-300 space-y-2 font-semibold">
+                        <div class="flex gap-2"><i class="fa-solid fa-flag w-5 text-center text-zinc-500"></i> <span id="det-country">Япония</span></div>
+                        <div class="flex gap-2"><i class="fa-solid fa-tv w-5 text-center text-zinc-500"></i> <span id="det-episodes">12 эп.</span></div>
+                        <div class="flex gap-2"><i class="fa-solid fa-video w-5 text-center text-zinc-500"></i> <span id="det-studio">Студия</span></div>
+                    </div>
+
+                    <div id="det-tags" class="flex flex-wrap gap-2 text-xs font-bold text-primary-400"></div>
+
+                    <p id="det-desc" class="text-sm text-zinc-400 leading-relaxed line-clamp-4"></p>
+                    <button onclick="this.previousElementSibling.classList.toggle('line-clamp-4'); this.textContent = this.textContent === 'Подробнее...' ? 'Скрыть' : 'Подробнее...'" class="text-primary-500 text-xs font-bold">Подробнее...</button>
+
+                    <!-- АДМИН ПАНЕЛЬ -->
+                    <div class="admin-only hidden bg-zinc-950/80 p-4 rounded-xl border border-zinc-800 mt-4 shadow-inner">
+                        <h4 class="text-primary-500 font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-crown"></i> Панель Автора
+                        </h4>
+                        <div class="flex gap-2">
+                            <button onclick="window.showModal('modal-add-episode')" class="flex-1 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white py-3 rounded-lg font-bold text-sm smooth-transition flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Добавить серию
+                            </button>
+                            <button onclick="window.deleteCurrentAnime()" class="bg-red-500/10 text-red-500 hover:bg-red-600 hover:text-white px-4 py-3 rounded-lg font-bold text-sm smooth-transition" title="Удалить тайтл">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ПЛЕЕР -->
+        <section id="view-player" class="view-section animate-slide-up hidden bg-zinc-950 fixed inset-0 z-50 overflow-y-auto pb-20">
+            <!-- Шапка плеера -->
+            <div class="bg-zinc-900 border-b border-zinc-800 p-3 flex justify-between items-center sticky top-0 z-20">
+                <button onclick="window.closePlayer()" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-white bg-zinc-800 rounded-full smooth-transition active:scale-90">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="text-center truncate px-4">
+                    <div class="text-xs text-zinc-400 font-bold uppercase" id="player-anime-title">Название</div>
+                    <div class="text-sm text-white font-black truncate" id="player-ep-title">Выберите серию</div>
+                </div>
+                <!-- КНОПКА НАСТРОЕК -->
+                <button onclick="window.showModal('modal-player-settings')" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-white bg-zinc-800 rounded-full smooth-transition active:scale-90 shadow-md">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+
+            <!-- Сам плеер -->
+            <div class="w-full bg-black aspect-video relative flex items-center justify-center border-b border-zinc-800/80 shadow-2xl">
+                <video id="video-player" controls playsinline webkit-playsinline class="w-full h-full outline-none hidden"></video>
+                <div id="player-placeholder" class="text-zinc-600 flex flex-col items-center justify-center w-full h-full p-4">
+                    <i class="fa-solid fa-play text-4xl mb-2 opacity-50 text-zinc-600" id="placeholder-icon"></i>
+                    <span class="text-sm font-bold opacity-50 text-zinc-600 text-center" id="placeholder-text">Загрузка...</span>
+                </div>
+            </div>
+
+            <!-- Сетка серий под плеером -->
+            <div class="p-4 max-w-4xl mx-auto">
+                <div class="flex gap-2 overflow-x-auto hide-scroll pb-2 mb-4" id="player-source-tabs">
+                    <!-- Озвучки -->
+                </div>
+                <!-- Сетка квадратиков -->
+                <div id="player-episodes-grid" class="grid grid-cols-5 sm:grid-cols-8 gap-2"></div>
+            </div>
+        </section>
+
+        <!-- 6. ПРОФИЛЬ -->
+        <section id="view-profile" class="view-section animate-fade-in hidden">
+            <div class="flex items-center gap-4 bg-zinc-900 p-5 rounded-3xl border border-zinc-800/80 mb-6 shadow-lg">
+                <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-black shadow-inner">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-black text-white">Зритель</h2>
+                    <p class="text-sm text-zinc-500 font-bold">Любитель аниме • Статус не установлен</p>
+                </div>
+            </div>
+
+            <div class="bg-zinc-900 p-5 rounded-3xl border border-zinc-800/80 mb-6 flex gap-6 items-center shadow-lg">
+                <div id="stat-donut-chart" class="w-24 h-24 stat-donut relative flex-shrink-0 shadow-inner">
+                    <div class="absolute inset-2 bg-zinc-900 rounded-full flex items-center justify-center text-xs font-black text-zinc-400" id="stat-total">0</div>
+                </div>
+                <div class="flex-1 flex flex-col gap-1.5 text-sm font-bold">
+                    <div class="flex justify-between items-center"><span class="flex items-center gap-2 text-zinc-300"><div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>Смотрю</span> <span id="stat-watching" class="text-white">0</span></div>
+                    <div class="flex justify-between items-center"><span class="flex items-center gap-2 text-zinc-300"><div class="w-2.5 h-2.5 rounded-full bg-fuchsia-500"></div>В планах</span> <span id="stat-planned" class="text-white">0</span></div>
+                    <div class="flex justify-between items-center"><span class="flex items-center gap-2 text-zinc-300"><div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>Просмотрено</span> <span id="stat-completed" class="text-white">0</span></div>
+                    <div class="flex justify-between items-center"><span class="flex items-center gap-2 text-zinc-300"><div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>Отложено</span> <span id="stat-hold" class="text-white">0</span></div>
+                    <div class="flex justify-between items-center"><span class="flex items-center gap-2 text-zinc-300"><div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>Брошено</span> <span id="stat-dropped" class="text-white">0</span></div>
+                </div>
+            </div>
+
+            <!-- ВХОД ДЛЯ АВТОРА -->
+            <div id="btn-login-admin" class="mt-2 mb-6">
+                <button onclick="window.showModal('modal-auth')" class="w-full bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 text-white py-4 rounded-2xl font-bold smooth-transition flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-lock text-zinc-400"></i> Вход для Автора
+                </button>
+            </div>
+
+            <div class="admin-only hidden mt-8 pt-6 border-t border-zinc-800">
+                <h4 class="text-primary-500 font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-crown"></i> Управление каталогом
+                </h4>
+                <button onclick="window.showModal('modal-add-anime')" class="w-full bg-primary-600/20 text-primary-400 border border-primary-500/30 hover:bg-primary-600 hover:text-white py-4 rounded-2xl font-black smooth-transition shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Добавить новое аниме (Тайтл)
+                </button>
+                <button onclick="window.logoutAdmin()" class="w-full bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white py-4 rounded-2xl font-black smooth-transition mt-3 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i> Выйти из админки
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+    <nav class="fixed bottom-0 left-0 right-0 h-[70px] bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-800/80 flex justify-around items-center px-2 z-40 pb-safe shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+        <button onclick="window.switchView('home')" id="nav-home" class="nav-item active flex flex-col items-center gap-1 w-16 smooth-transition text-zinc-500">
+            <div class="nav-icon-wrapper w-10 h-10 flex items-center justify-center rounded-2xl smooth-transition"><i class="fa-solid fa-house text-lg"></i></div>
+            <span class="text-[10px] font-bold">Главная</span>
+        </button>
+        <button onclick="window.showToast('Раздел в разработке', 'fa-compass')" id="nav-discover" class="nav-item flex flex-col items-center gap-1 w-16 smooth-transition text-zinc-500 hover:text-zinc-300">
+            <div class="nav-icon-wrapper w-10 h-10 flex items-center justify-center rounded-2xl smooth-transition"><i class="fa-solid fa-compass text-lg"></i></div>
+            <span class="text-[10px] font-bold">Обзор</span>
+        </button>
+        <button onclick="window.switchView('bookmarks')" id="nav-bookmarks" class="nav-item flex flex-col items-center gap-1 w-16 smooth-transition text-zinc-500 hover:text-zinc-300">
+            <div class="nav-icon-wrapper w-10 h-10 flex items-center justify-center rounded-2xl smooth-transition"><i class="fa-solid fa-bookmark text-lg"></i></div>
+            <span class="text-[10px] font-bold">Закладки</span>
+        </button>
+        <button onclick="window.showToast('Раздел в разработке', 'fa-list')" id="nav-feed" class="nav-item flex flex-col items-center gap-1 w-16 smooth-transition text-zinc-500 hover:text-zinc-300">
+            <div class="nav-icon-wrapper w-10 h-10 flex items-center justify-center rounded-2xl smooth-transition"><i class="fa-solid fa-list text-lg"></i></div>
+            <span class="text-[10px] font-bold">Лента</span>
+        </button>
+        <button onclick="window.switchView('profile')" id="nav-profile" class="nav-item flex flex-col items-center gap-1 w-16 smooth-transition text-zinc-500 hover:text-zinc-300">
+            <div class="nav-icon-wrapper w-10 h-10 flex items-center justify-center rounded-2xl smooth-transition"><i class="fa-solid fa-user text-lg"></i></div>
+            <span class="text-[10px] font-bold">Профиль</span>
+        </button>
+    </nav>
+
+
+    <!-- НОВЫЕ СТАБИЛЬНЫЕ МОДАЛКИ (БЕЗ ЛАГОВ) -->
+
+    <!-- ОКНО ВЫБОРА ОЗВУЧКИ И СЕРИИ -->
+    <div id="modal-watch" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-end justify-center p-0 sm:p-4 opacity-0 invisible pointer-events-none smooth-transition">
+        <div class="modal-content-anim bottom-sheet translate-y-full bg-zinc-900 border-t border-zinc-800 w-full max-w-lg rounded-t-[2rem] sm:rounded-[2rem] p-6 pb-safe shadow-2xl relative">
+            <div class="w-12 h-1.5 bg-zinc-700 rounded-full mx-auto mb-4 sm:hidden"></div>
+            
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-black text-white">Смотреть онлайн</h3>
+                <div class="flex gap-3">
+                    <button id="btn-toggle-del" onclick="window.toggleDeleteMode()" class="admin-only hidden w-8 h-8 flex items-center justify-center bg-zinc-800 text-zinc-400 hover:text-red-500 rounded-full smooth-transition" title="Режим удаления">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    <button onclick="window.hideModal('modal-watch')" class="w-8 h-8 flex items-center justify-center bg-zinc-800 text-zinc-400 hover:text-white rounded-full smooth-transition"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <!-- Горизонтальные табы Озвучек -->
+            <div class="flex gap-2 overflow-x-auto hide-scroll pb-2 mb-4 border-b border-zinc-800" id="watch-source-tabs"></div>
+            
+            <!-- Компактная сетка серий (Квадратики) -->
+            <div class="grid grid-cols-5 sm:grid-cols-6 gap-2 max-h-[40vh] overflow-y-auto hide-scroll pb-4" id="watch-episodes-grid"></div>
+        </div>
+    </div>
+
+    <!-- Авторизация (ПИН СКРЫТ ИЗ ТЕКСТА) -->
+    <div id="modal-auth" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 opacity-0 invisible pointer-events-none smooth-transition">
+        <div class="modal-content-anim scale-95 translate-y-10 bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-[2rem] p-8 text-center shadow-2xl relative">
+            <div class="w-16 h-16 bg-primary-600/10 text-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner"><i class="fa-solid fa-crown"></i></div>
+            <h3 class="text-2xl font-black text-white mb-2">Админ-панель</h3>
+            <p class="text-sm text-zinc-500 mb-6 font-bold">Введите секретный ПИН-код</p>
+            <input type="password" id="in-admin-pass" class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 text-center text-white text-2xl font-bold mb-4 outline-none focus:border-primary-500 shadow-inner" placeholder="****">
+            <button onclick="window.loginAdmin()" class="w-full bg-primary-600 hover:bg-primary-500 text-white font-bold py-4 rounded-2xl mb-4 smooth-transition active:scale-95 shadow-lg shadow-primary-600/30">Войти</button>
+            <button onclick="window.hideModal('modal-auth')" class="text-zinc-500 hover:text-white font-bold text-sm smooth-transition">Отмена</button>
+        </div>
+    </div>
+
+    <!-- Выбор статуса закладки -->
+    <div id="modal-bookmark" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-end justify-center p-0 sm:p-4 opacity-0 invisible pointer-events-none smooth-transition">
+        <div class="modal-content-anim bottom-sheet translate-y-full bg-zinc-900 border-t border-zinc-800 w-full max-w-sm rounded-t-[2rem] sm:rounded-[2rem] p-6 pb-safe shadow-2xl relative">
+            <div class="w-12 h-1.5 bg-zinc-700 rounded-full mx-auto mb-6 sm:hidden"></div>
+            <h3 class="text-xl font-black text-white mb-4 text-center">Добавить в список</h3>
+            <div class="flex flex-col gap-2">
+                <button onclick="window.setBookmark('watching')" class="flex items-center gap-3 p-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-bold smooth-transition"><div class="w-3 h-3 rounded-full bg-emerald-500"></div> Смотрю</button>
+                <button onclick="window.setBookmark('planned')" class="flex items-center gap-3 p-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-bold smooth-transition"><div class="w-3 h-3 rounded-full bg-fuchsia-500"></div> В планах</button>
+                <button onclick="window.setBookmark('completed')" class="flex items-center gap-3 p-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-bold smooth-transition"><div class="w-3 h-3 rounded-full bg-blue-500"></div> Просмотрено</button>
+                <button onclick="window.setBookmark('hold')" class="flex items-center gap-3 p-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-bold smooth-transition"><div class="w-3 h-3 rounded-full bg-amber-500"></div> Отложено</button>
+                <button onclick="window.setBookmark('dropped')" class="flex items-center gap-3 p-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-bold smooth-transition"><div class="w-3 h-3 rounded-full bg-red-500"></div> Брошено</button>
+                <button onclick="window.setBookmark(null)" class="flex items-center justify-center p-4 rounded-xl text-zinc-500 hover:bg-zinc-800 hover:text-white font-bold mt-2 smooth-transition">Удалить из списка</button>
+            </div>
+            <button onclick="window.hideModal('modal-bookmark')" class="absolute top-4 right-4 w-8 h-8 hidden sm:flex items-center justify-center bg-zinc-800 text-zinc-400 hover:text-white rounded-full smooth-transition"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <!-- НАСТРОЙКИ ПЛЕЕРА -->
+    <div id="modal-player-settings" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-end justify-center p-0 sm:p-4 opacity
