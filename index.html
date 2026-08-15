@@ -80,7 +80,6 @@
     <!-- ВЕРХНЯЯ ШАПКА -->
     <header class="fixed top-0 left-0 right-0 z-40 bg-zinc-950/90 backdrop-blur-xl border-b border-zinc-800/80 h-14 flex items-center justify-between px-3 sm:px-4 shadow-sm">
         <div class="flex items-center gap-3">
-            <!-- КНОПКА ПЕРЕХОДА К МАНГЕ -->
             <a href="https://eleusin12345-web.github.io/Ice-manga/" class="group relative flex items-center gap-2 bg-gradient-to-r from-zinc-900 to-zinc-950 border border-zinc-800 hover:border-primary-500/50 pr-3 sm:pr-4 pl-1 py-1 rounded-full smooth-transition shadow-md overflow-hidden">
                 <div class="absolute inset-0 bg-primary-500/10 translate-x-[-100%] group-hover:translate-x-0 smooth-transition"></div>
                 <div class="relative w-7 h-7 rounded-full bg-zinc-800 group-hover:bg-primary-600 flex items-center justify-center text-zinc-400 group-hover:text-white smooth-transition shadow-inner">
@@ -89,7 +88,7 @@
                 <span class="relative text-[10px] sm:text-xs font-black text-zinc-300 group-hover:text-white tracking-wider uppercase smooth-transition">Манга</span>
             </a>
             
-            <div class="h-4 w-px bg-zinc-800 hidden sm:block"></div> <!-- Разделитель -->
+            <div class="h-4 w-px bg-zinc-800 hidden sm:block"></div>
             
             <span class="font-black text-base sm:text-lg tracking-tight text-white hidden sm:flex items-center gap-1">
                 Anime<span class="text-primary-500">PRO</span>
@@ -117,9 +116,7 @@
                 <p class="font-black text-lg">Каталог аниме пуст</p>
             </div>
 
-            <div id="home-list" class="flex flex-col gap-4">
-                <!-- Карточки -->
-            </div>
+            <div id="home-list" class="flex flex-col gap-4"></div>
         </section>
 
         <!-- 2. СТРАНИЦА ПОИСКА -->
@@ -211,7 +208,6 @@
 
         <!-- 5. ПЛЕЕР -->
         <section id="view-player" class="view-section animate-slide-up hidden bg-zinc-950 fixed inset-0 z-50 overflow-y-auto pb-20">
-            <!-- Шапка плеера -->
             <div class="bg-zinc-900 border-b border-zinc-800 p-3 flex justify-between items-center sticky top-0 z-20">
                 <button onclick="window.closePlayer()" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-white bg-zinc-800 rounded-full smooth-transition active:scale-90">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -220,13 +216,11 @@
                     <div class="text-xs text-zinc-400 font-bold uppercase" id="player-anime-title">Название</div>
                     <div class="text-sm text-white font-black truncate" id="player-ep-title">Выберите серию</div>
                 </div>
-                <!-- КНОПКА НАСТРОЕК -->
                 <button onclick="window.showModal('modal-player-settings')" class="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-white bg-zinc-800 rounded-full smooth-transition active:scale-90 shadow-md">
                     <i class="fa-solid fa-gear"></i>
                 </button>
             </div>
 
-            <!-- Сам плеер -->
             <div class="w-full bg-black aspect-video relative flex items-center justify-center border-b border-zinc-800/80 shadow-2xl">
                 <video id="video-player" controls playsinline webkit-playsinline class="w-full h-full outline-none hidden"></video>
                 <div id="player-placeholder" class="text-zinc-600 flex flex-col items-center justify-center w-full h-full p-4">
@@ -235,12 +229,8 @@
                 </div>
             </div>
 
-            <!-- Сетка серий под плеером -->
             <div class="p-4 max-w-4xl mx-auto">
-                <div class="flex gap-2 overflow-x-auto hide-scroll pb-2 mb-4" id="player-source-tabs">
-                    <!-- Озвучки -->
-                </div>
-                <!-- Сетка квадратиков -->
+                <div class="flex gap-2 overflow-x-auto hide-scroll pb-2 mb-4" id="player-source-tabs"></div>
                 <div id="player-episodes-grid" class="grid grid-cols-5 sm:grid-cols-8 gap-2"></div>
             </div>
         </section>
@@ -252,8 +242,8 @@
                     <i class="fa-solid fa-user"></i>
                 </div>
                 <div>
-                    <h2 class="text-xl font-black text-white">Зритель</h2>
-                    <p class="text-sm text-zinc-500 font-bold">Любитель аниме • Статус не установлен</p>
+                    <h2 class="text-xl font-black text-white" id="profile-name">Зритель</h2>
+                    <p class="text-sm text-zinc-500 font-bold" id="profile-role">Любитель аниме</p>
                 </div>
             </div>
 
@@ -285,7 +275,7 @@
                     <i class="fa-solid fa-plus"></i> Добавить новое аниме (Тайтл)
                 </button>
                 <button onclick="window.logoutAdmin()" class="w-full bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white py-4 rounded-2xl font-black smooth-transition mt-3 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-right-from-bracket"></i> Выйти из админки
+                    <i class="fa-solid fa-right-from-bracket"></i> Выйти из аккаунта
                 </button>
             </div>
         </section>
@@ -334,22 +324,23 @@
                 </div>
             </div>
 
-            <!-- Горизонтальные табы Озвучек -->
             <div class="flex gap-2 overflow-x-auto hide-scroll pb-2 mb-4 border-b border-zinc-800" id="watch-source-tabs"></div>
-            
-            <!-- Компактная сетка серий (Квадратики) -->
             <div class="grid grid-cols-5 sm:grid-cols-6 gap-2 max-h-[40vh] overflow-y-auto hide-scroll pb-4" id="watch-episodes-grid"></div>
         </div>
     </div>
 
-    <!-- Авторизация (ПИН СКРЫТ ИЗ ТЕКСТА) -->
+    <!-- Авторизация (Обновленная) -->
     <div id="modal-auth" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 opacity-0 invisible pointer-events-none smooth-transition">
         <div class="modal-content-anim scale-95 translate-y-10 bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-[2rem] p-8 text-center shadow-2xl relative">
             <div class="w-16 h-16 bg-primary-600/10 text-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner"><i class="fa-solid fa-crown"></i></div>
-            <h3 class="text-2xl font-black text-white mb-2">Админ-панель</h3>
-            <p class="text-sm text-zinc-500 mb-6 font-bold">Введите секретный ПИН-код</p>
-            <input type="password" id="in-admin-pass" class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 text-center text-white text-2xl font-bold mb-4 outline-none focus:border-primary-500 shadow-inner" placeholder="****">
-            <button onclick="window.loginAdmin()" class="w-full bg-primary-600 hover:bg-primary-500 text-white font-bold py-4 rounded-2xl mb-4 smooth-transition active:scale-95 shadow-lg shadow-primary-600/30">Войти</button>
+            <h3 class="text-2xl font-black text-white mb-2">Вход Автора</h3>
+            <p class="text-sm text-zinc-500 mb-6 font-bold">Введите Email и Пароль</p>
+            
+            <!-- Заменили ПИН на Email и Пароль -->
+            <input type="email" id="in-admin-email" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white font-bold mb-3 outline-none focus:border-primary-500 shadow-inner" placeholder="Email (например: admin@mail.ru)">
+            <input type="password" id="in-admin-pass" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white font-bold mb-5 outline-none focus:border-primary-500 shadow-inner" placeholder="Пароль">
+            
+            <button onclick="window.loginAdmin()" id="btn-login-submit" class="w-full bg-primary-600 hover:bg-primary-500 text-white font-bold py-4 rounded-xl mb-4 smooth-transition active:scale-95 shadow-lg shadow-primary-600/30">Войти</button>
             <button onclick="window.hideModal('modal-auth')" class="text-zinc-500 hover:text-white font-bold text-sm smooth-transition">Отмена</button>
         </div>
     </div>
@@ -372,4 +363,779 @@
     </div>
 
     <!-- НАСТРОЙКИ ПЛЕЕРА -->
-    <div id="modal-player-settings" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-end justify-center p-0 sm:p-4 opacity
+    <div id="modal-player-settings" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-end justify-center p-0 sm:p-4 opacity-0 invisible pointer-events-none smooth-transition">
+        <div class="modal-content-anim bottom-sheet translate-y-full bg-zinc-900 border-t border-zinc-800 w-full max-w-sm rounded-t-[2rem] sm:rounded-[2rem] p-6 pb-safe shadow-2xl relative">
+            <div class="w-12 h-1.5 bg-zinc-700 rounded-full mx-auto mb-6 sm:hidden"></div>
+            <h3 class="text-xl font-black text-white mb-6 text-center">Настройки видео</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-zinc-500 text-xs font-bold uppercase mb-2 block pl-1">Скорость воспроизведения</label>
+                    <div class="relative">
+                        <select id="sel-speed" onchange="window.changeVideoSpeed(this.value)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 font-bold appearance-none">
+                            <option value="0.5">0.5x (Медленно)</option>
+                            <option value="1.0" selected>1.0x (Обычная)</option>
+                            <option value="1.25">1.25x (Быстрее)</option>
+                            <option value="1.5">1.5x (Быстро)</option>
+                            <option value="2.0">2.0x (Очень быстро)</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 pointer-events-none"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-zinc-500 text-xs font-bold uppercase mb-2 block pl-1">Качество</label>
+                    <div class="relative">
+                        <select class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 font-bold appearance-none">
+                            <option value="1080">1080p FHD</option>
+                            <option value="720" selected>720p HD</option>
+                            <option value="480">480p</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 pointer-events-none"></i>
+                    </div>
+                </div>
+            </div>
+            <button onclick="window.hideModal('modal-player-settings')" class="w-full mt-6 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-4 rounded-xl smooth-transition">Готово</button>
+        </div>
+    </div>
+
+    <!-- Добавить аниме (Админ) -->
+    <div id="modal-add-anime" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[100] flex items-center justify-center p-4 opacity-0 invisible pointer-events-none smooth-transition overflow-y-auto">
+        <div class="modal-content-anim scale-95 translate-y-10 bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-[2rem] p-6 my-8 shadow-2xl relative">
+            <h3 class="text-2xl font-black text-white mb-6">Новое аниме</h3>
+            <form onsubmit="window.saveAnime(event)" class="space-y-4">
+                <input type="text" id="in-a-title" required placeholder="Название тайтла *" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm">
+                <input type="url" id="in-a-cover" required placeholder="URL Обложки (картинка) *" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm">
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="in-a-episodes" placeholder="Эпизоды (напр: 12 эп.)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm">
+                    <select id="in-a-status" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm appearance-none">
+                        <option value="Онгоинг">Онгоинг</option>
+                        <option value="Завершен">Завершен</option>
+                        <option value="Анонс">Анонс</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="in-a-studio" placeholder="Студия" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm">
+                    <input type="text" id="in-a-country" placeholder="Страна/Год" value="Япония" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm">
+                </div>
+
+                <input type="text" id="in-a-tags" placeholder="Жанры (через запятую)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm">
+                <textarea id="in-a-desc" placeholder="Описание сюжета..." rows="4" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 resize-none custom-scrollbar text-sm"></textarea>
+                
+                <button type="submit" id="btn-save-anime" class="w-full bg-primary-600 hover:bg-primary-500 text-white font-bold py-4 rounded-xl mt-4 smooth-transition active:scale-95 shadow-lg shadow-primary-600/30">Загрузить в базу</button>
+                <button type="button" onclick="window.hideModal('modal-add-anime')" class="w-full text-zinc-500 hover:text-white font-bold py-2 smooth-transition">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Добавить серию (Админ) -->
+    <div id="modal-add-episode" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[100] flex items-center justify-center p-4 opacity-0 invisible pointer-events-none smooth-transition">
+        <div class="modal-content-anim scale-95 translate-y-10 bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-[2rem] p-6 shadow-2xl relative">
+            <h3 class="text-2xl font-black text-white mb-6">Добавить видео (серию)</h3>
+            <form onsubmit="window.saveEpisode(event)" class="space-y-4">
+                <input type="text" id="in-ep-num" required placeholder="Номер серии (напр: 1)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm">
+                <input type="text" id="in-ep-source" required placeholder="Озвучка (напр: AniLibria)" value="Оригинал" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 text-sm">
+                <textarea id="in-ep-url" required rows="3" placeholder="Прямая ссылка на .mp4 видео" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white outline-none focus:border-primary-500 resize-none custom-scrollbar text-sm"></textarea>
+                
+                <button type="submit" id="btn-save-ep" class="w-full bg-primary-600 hover:bg-primary-500 text-white font-bold py-4 rounded-xl mt-4 smooth-transition active:scale-95 shadow-lg shadow-primary-600/30">Загрузить</button>
+                <button type="button" onclick="window.hideModal('modal-add-episode')" class="w-full text-zinc-500 hover:text-white font-bold py-2 smooth-transition">Отмена</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FIREBASE И ЛОГИКА -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        // ДОБАВЛЕНЫ НОВЫЕ ИМПОРТЫ ДЛЯ АВТОРИЗАЦИИ (Email/Password + Выход)
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCz1zBOWTXWZHnUjzQq2-Tsh20df-O_qb4",
+            authDomain: "mangaweb-ee8fc.firebaseapp.com",
+            projectId: "mangaweb-ee8fc",
+            storageBucket: "mangaweb-ee8fc.firebasestorage.app",
+            messagingSenderId: "415476811249",
+            appId: "1:415476811249:web:4c1169537a0d2491833050"
+        };
+        const appIdStr = 'mangaweb-ee8fc'; 
+        
+        // ВАЖНО: Укажи здесь Email, который ты зарегистрируешь в консоли Firebase для Админа
+        const ADMIN_EMAIL = "admin@mail.ru";
+
+        let dbRef = null; let authRef = null; let user = null;
+        let dbAnime = []; let dbEpisodes = []; let dbBookmarks = [];
+        let hlsInstance = null;
+        
+        // Убрали проверку из localStorage (это была дыра в безопасности)
+        window.isAdmin = false;
+        
+        let currentAnimeId = null;
+        let currentBookmarksTab = 'watching';
+        let currentSource = null; 
+        window.isDeleteMode = false;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const app = initializeApp(firebaseConfig);
+                authRef = getAuth(app); 
+                dbRef = getFirestore(app);
+                
+                // Слушатель состояния пользователя Firebase
+                onAuthStateChanged(authRef, async (u) => { 
+                    user = u; 
+                    if (user) { 
+                        // Надежная проверка админа по Email
+                        window.isAdmin = (user.email === "eleusin12345@gmail.com");
+                        checkAdmin();
+                        
+                        // Обновляем профиль визуально
+                        const profName = document.getElementById('profile-name');
+                        const profRole = document.getElementById('profile-role');
+                        if (window.isAdmin) {
+                            profName.textContent = "Администратор";
+                            profRole.textContent = "Автор сайта";
+                            profName.classList.add('text-primary-500');
+                        } else {
+                            profName.textContent = "Зритель";
+                            profRole.textContent = "Любитель аниме";
+                            profName.classList.remove('text-primary-500');
+                        }
+                        
+                        listenData(); 
+                    } else {
+                        // Если юзер вообще не авторизован (например, только зашел) - логиним анонимно
+                        window.isAdmin = false;
+                        checkAdmin();
+                        try { await signInAnonymously(authRef); } catch (e) { console.error("Ошибка анонимного входа:", e); }
+                    }
+                });
+            } catch (err) { window.showToast('Ошибка сети', 'fa-wifi'); }
+            
+            // УМНАЯ ОБРАБОТКА ОШИБКИ ВИДЕО
+            const video = document.getElementById('video-player');
+            const placeholder = document.getElementById('player-placeholder');
+            
+            video.onerror = function() {
+                window.showToast('Ошибка загрузки видео', 'fa-triangle-exclamation');
+                placeholder.classList.remove('hidden');
+                video.classList.add('hidden');
+                
+                placeholder.innerHTML = `
+                    <i class="fa-solid fa-link-slash text-red-500 text-4xl mb-3"></i>
+                    <span class="text-xs font-bold text-red-500 mb-4 text-center px-4 max-w-xs">
+                        Сервер заблокировал воспроизведение внутри сайта или формат видео не поддерживается.
+                    </span>
+                    <a href="${video.src}" target="_blank" class="bg-zinc-800 text-white border border-zinc-700 px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-zinc-700 smooth-transition active:scale-95 shadow-sm">
+                        <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Открыть ссылку напрямую
+                    </a>
+                `;
+            };
+        });
+
+        function listenData() {
+            if (!dbRef) return;
+            onSnapshot(collection(dbRef, 'artifacts', appIdStr, 'public', 'data', 'animes'), (snap) => {
+                dbAnime = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => b.createdAt - a.createdAt); 
+                renderHome();
+                if(currentAnimeId && !document.getElementById('view-details').classList.contains('hidden')) renderDetails(currentAnimeId);
+                if(!document.getElementById('view-search').classList.contains('hidden')) window.doSearch();
+            });
+            onSnapshot(collection(dbRef, 'artifacts', appIdStr, 'public', 'data', 'anime_episodes'), (snap) => {
+                dbEpisodes = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => parseInt(a.num) - parseInt(b.num));
+                if(currentAnimeId && !document.getElementById('modal-watch').classList.contains('invisible')) {
+                    renderSourcesTabs('watch');
+                    window.renderEpisodesGrid('watch');
+                }
+                if(currentAnimeId && !document.getElementById('view-player').classList.contains('hidden')) {
+                    renderSourcesTabs('player');
+                    window.renderEpisodesGrid('player');
+                }
+            });
+            if(user) {
+                onSnapshot(collection(dbRef, 'artifacts', appIdStr, 'public', 'data', 'anime_bookmarks'), (snap) => {
+                    dbBookmarks = snap.docs.map(d => ({ id: d.id, ...d.data() })); 
+                    updateStatsAndProfile();
+                    if(!document.getElementById('view-bookmarks').classList.contains('hidden')) window.renderBookmarksView();
+                    if(currentAnimeId) updateBookmarkIcon();
+                });
+            }
+        }
+
+        window.switchView = function(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => { el.classList.add('hidden'); el.classList.remove('block', 'flex'); });
+            const viewEl = document.getElementById(`view-${viewId}`);
+            
+            if(viewId === 'bookmarks') {
+                viewEl.classList.remove('hidden'); viewEl.classList.add('flex'); window.renderBookmarksView();
+            } else {
+                viewEl.classList.remove('hidden'); viewEl.classList.add('block');
+            }
+            window.scrollTo({ top: 0, behavior: 'instant' });
+
+            if(['home', 'discover', 'bookmarks', 'feed', 'profile'].includes(viewId)) {
+                document.querySelectorAll('.nav-item').forEach(el => { el.classList.remove('active', 'text-zinc-300'); el.classList.add('text-zinc-500'); });
+                const navBtn = document.getElementById(`nav-${viewId}`);
+                if(navBtn) { navBtn.classList.add('active'); navBtn.classList.remove('text-zinc-500'); }
+            }
+            
+            if(viewId !== 'player') document.getElementById('video-player').pause();
+            checkAdmin();
+        }
+
+        function renderHome() {
+            const list = document.getElementById('home-list');
+            const empty = document.getElementById('home-empty');
+            list.innerHTML = '';
+            
+            if(dbAnime.length === 0) { empty.classList.remove('hidden'); list.classList.add('hidden'); return; }
+            empty.classList.add('hidden'); list.classList.remove('hidden');
+
+            list.innerHTML = dbAnime.map(anime => createAnimeCardHTML(anime)).join('');
+        }
+
+        function createAnimeCardHTML(anime) {
+            const myBm = dbBookmarks.find(b => b.animeId === anime.id && b.userId === user?.uid);
+            const statusBadge = myBm ? `<div class="absolute bottom-0 left-0 right-0 bg-primary-600/90 text-white text-[10px] text-center py-1 font-black truncate backdrop-blur-md">${getStatusName(myBm.status)}</div>` : '';
+
+            return `
+                <div class="flex gap-4 p-3 bg-zinc-900 rounded-2xl border border-zinc-800/80 cursor-pointer card-hover shadow-lg" onclick="window.openAnimeDetails('${anime.id}')">
+                    <div class="relative w-24 h-36 shrink-0 rounded-xl overflow-hidden shadow-inner bg-zinc-950 border border-zinc-700/50">
+                        <img src="${anime.cover}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/300x450/18181b/ffffff?text=Нет+фото'">
+                        ${statusBadge}
+                    </div>
+                    <div class="flex flex-col flex-1 py-1 overflow-hidden">
+                        <h3 class="text-white font-black text-base sm:text-lg leading-tight mb-1 truncate">${anime.title}</h3>
+                        <div class="text-xs text-zinc-400 font-bold mb-2 flex items-center gap-2">
+                            <span>${anime.episodesStr || 'Серии не указаны'}</span> • 
+                            <span class="text-primary-400 flex items-center gap-1"><i class="fa-solid fa-star text-[10px]"></i> ${anime.rating || '0.0'}</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 line-clamp-2 leading-relaxed font-semibold">${anime.desc || 'Описание отсутствует.'}</p>
+                        <div class="mt-auto text-[10px] font-bold text-zinc-600 flex gap-2">
+                            <span><i class="fa-solid fa-eye"></i> ${anime.views || 0}</span>
+                            <span>${anime.status || ''}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getStatusName(status) {
+            const map = { 'watching': 'Смотрю', 'planned': 'В планах', 'completed': 'Просмотрено', 'hold': 'Отложено', 'dropped': 'Брошено' };
+            return map[status] || '';
+        }
+
+        window.doSearch = function() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const resultsCont = document.getElementById('search-results');
+            const empty = document.getElementById('search-empty');
+            
+            if(!query) { resultsCont.innerHTML = ''; empty.classList.remove('hidden'); return; }
+            
+            const filtered = dbAnime.filter(a => a.title.toLowerCase().includes(query));
+            if(filtered.length === 0) { resultsCont.innerHTML = ''; empty.classList.remove('hidden'); } 
+            else { empty.classList.add('hidden'); resultsCont.innerHTML = filtered.map(a => createAnimeCardHTML(a)).join(''); }
+        }
+
+        const BM_TABS = [
+            { id: 'watching', name: 'Смотрю', color: 'emerald' },
+            { id: 'planned', name: 'В планах', color: 'fuchsia' },
+            { id: 'completed', name: 'Просмотрено', color: 'blue' },
+            { id: 'hold', name: 'Отложено', color: 'amber' },
+            { id: 'dropped', name: 'Брошено', color: 'red' }
+        ];
+
+        window.setBookmarksTab = function(tabId) { currentBookmarksTab = tabId; window.renderBookmarksView(); }
+
+        window.renderBookmarksView = function() {
+            const myBms = dbBookmarks.filter(b => b.userId === user?.uid);
+            
+            const tabsCont = document.getElementById('bookmarks-tabs'); tabsCont.innerHTML = '';
+            BM_TABS.forEach(tab => {
+                const count = myBms.filter(b => b.status === tab.id).length;
+                const isActive = currentBookmarksTab === tab.id;
+                const btn = document.createElement('button');
+                btn.className = `whitespace-nowrap px-4 py-2 rounded-xl text-sm font-bold smooth-transition border ${isActive ? 'bg-zinc-800 text-white border-zinc-700 shadow-md' : 'text-zinc-500 border-transparent hover:text-zinc-300'}`;
+                btn.onclick = () => window.setBookmarksTab(tab.id);
+                btn.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-${tab.color}-500 mr-2"></span>${tab.name} <span class="text-zinc-600 ml-1">(${count})</span>`;
+                tabsCont.appendChild(btn);
+            });
+
+            const listCont = document.getElementById('bookmarks-list'); const empty = document.getElementById('bookmarks-empty');
+            const filteredBms = myBms.filter(b => b.status === currentBookmarksTab);
+            
+            if(filteredBms.length === 0) { listCont.innerHTML = ''; empty.classList.remove('hidden'); empty.classList.add('flex'); } 
+            else {
+                empty.classList.remove('flex'); empty.classList.add('hidden');
+                const animesToRender = filteredBms.map(bm => dbAnime.find(a => a.id === bm.animeId)).filter(a => a !== undefined);
+                listCont.innerHTML = animesToRender.map(a => createAnimeCardHTML(a)).join('');
+            }
+        }
+
+        window.openAnimeDetails = function(id) {
+            currentAnimeId = id;
+            if (!window.animeSessionViewed) window.animeSessionViewed = [];
+            if (!window.animeSessionViewed.includes(id) && dbRef) {
+                window.animeSessionViewed.push(id);
+                const a = dbAnime.find(x => x.id === id);
+                if(a) updateDoc(doc(dbRef, 'artifacts', appIdStr, 'public', 'data', 'animes', id), { views: (a.views || 0) + 1 }).catch(()=>{});
+            }
+            renderDetails(id);
+            window.switchView('details');
+        }
+
+        function renderDetails(id) {
+            const anime = dbAnime.find(a => a.id === id);
+            if(!anime) return;
+            
+            document.getElementById('det-cover').src = anime.cover;
+            document.getElementById('det-bg').src = anime.cover;
+            document.getElementById('det-title').textContent = anime.title;
+            document.getElementById('det-status').textContent = anime.status || 'Онгоинг';
+            document.getElementById('det-episodes').textContent = anime.episodesStr || '-';
+            document.getElementById('det-studio').textContent = anime.studio || '-';
+            document.getElementById('det-country').textContent = anime.country || '-';
+            document.getElementById('det-desc').textContent = anime.desc || 'Нет описания.';
+            document.getElementById('det-rating').textContent = anime.rating || '0.0';
+            document.getElementById('det-views').textContent = anime.views || '0';
+            
+            const tagsCont = document.getElementById('det-tags'); tagsCont.innerHTML = '';
+            if(anime.tags) { anime.tags.forEach(t => { tagsCont.innerHTML += `<span class="bg-zinc-800/80 text-zinc-300 px-2.5 py-1 rounded-lg border border-zinc-700/50 shadow-sm">${t}</span>`; }); }
+
+            document.getElementById('det-desc').classList.add('line-clamp-4');
+            document.getElementById('det-desc').nextElementSibling.textContent = 'Подробнее...';
+
+            updateBookmarkIcon();
+            checkAdmin();
+        }
+
+        window.openWatchModal = function() {
+            if(!currentAnimeId) return;
+            window.isDeleteMode = false;
+            
+            const eps = dbEpisodes.filter(e => e.animeId === currentAnimeId);
+            if(eps.length === 0) { window.showToast('Серий пока нет', 'fa-info-circle'); return; }
+
+            const sources = [...new Set(eps.map(e => e.source))];
+            if(!currentSource || !sources.includes(currentSource)) currentSource = sources[0];
+            
+            renderSourcesTabs('watch');
+            window.renderEpisodesGrid('watch');
+            
+            window.showModal('modal-watch');
+        }
+
+        window.changeSource = function(src, context) {
+            currentSource = src;
+            renderSourcesTabs(context);
+            window.renderEpisodesGrid(context);
+        }
+
+        function renderSourcesTabs(context) {
+            const eps = dbEpisodes.filter(e => e.animeId === currentAnimeId);
+            const sources = [...new Set(eps.map(e => e.source))];
+            
+            const tabsContId = context === 'watch' ? 'watch-source-tabs' : 'player-source-tabs';
+            const tabsCont = document.getElementById(tabsContId);
+            if(!tabsCont) return;
+            tabsCont.innerHTML = '';
+
+            sources.forEach(s => {
+                const isActive = s === currentSource;
+                const btn = document.createElement('button');
+                btn.className = `whitespace-nowrap px-4 py-2 rounded-xl text-sm font-bold smooth-transition border ${isActive ? 'bg-primary-600 text-white border-primary-500 shadow-md' : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:text-white'}`;
+                btn.textContent = s;
+                btn.onclick = () => window.changeSource(s, context);
+                tabsCont.appendChild(btn);
+            });
+        }
+
+        window.renderEpisodesGrid = function(context) {
+            const eps = dbEpisodes.filter(e => e.animeId === currentAnimeId && e.source === currentSource);
+            
+            const gridId = context === 'watch' ? 'watch-episodes-grid' : 'player-episodes-grid';
+            const grid = document.getElementById(gridId);
+            if(!grid) return;
+            
+            grid.innerHTML = '';
+            eps.forEach(ep => {
+                const btn = document.createElement('button');
+                
+                if (window.isDeleteMode && context === 'watch') {
+                    btn.className = 'w-full aspect-square rounded-xl flex items-center justify-center font-black text-sm smooth-transition bg-red-500/20 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white shadow-inner';
+                    btn.onclick = () => window.deleteEpisode(ep.id);
+                    btn.innerHTML = `<i class="fa-solid fa-trash-can mb-1 block text-xs"></i>${ep.num}`;
+                } else {
+                    btn.className = 'w-full aspect-square bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-primary-500 text-white rounded-xl flex flex-col items-center justify-center font-black text-sm smooth-transition active:scale-95 shadow-sm';
+                    btn.onclick = () => {
+                        if(context === 'watch') window.hideModal('modal-watch');
+                        window.startPlayingVideo(ep);
+                    };
+                    btn.innerHTML = `${ep.num}<span class="text-[9px] text-zinc-500 font-bold uppercase mt-0.5 truncate w-full px-1">${ep.source}</span>`;
+                }
+                grid.appendChild(btn);
+            });
+        }
+
+        window.toggleDeleteMode = function() {
+            window.isDeleteMode = !window.isDeleteMode;
+            const btn = document.getElementById('btn-toggle-del');
+            if (window.isDeleteMode) btn.classList.replace('text-zinc-400', 'text-red-500');
+            else btn.classList.replace('text-red-500', 'text-zinc-400');
+            window.renderEpisodesGrid('watch');
+        }
+
+        window.startPlayingVideo = function(ep) {
+            document.getElementById('player-anime-title').textContent = dbAnime.find(a => a.id === currentAnimeId).title;
+            document.getElementById('player-ep-title').textContent = `${ep.num} серия (${ep.source})`;
+            
+            const video = document.getElementById('video-player');
+            const placeholder = document.getElementById('player-placeholder');
+            
+            placeholder.innerHTML = `
+                <i class="fa-solid fa-play text-4xl mb-2 opacity-50 text-zinc-600"></i>
+                <span class="text-sm font-bold opacity-50 text-zinc-600">Загрузка...</span>
+            `;
+            
+            placeholder.classList.add('hidden');
+            video.classList.remove('hidden');
+            
+            if (hlsInstance) {
+                hlsInstance.destroy();
+                hlsInstance = null;
+            }
+
+            const videoUrl = ep.url || '';
+
+            if (videoUrl.includes('.m3u8')) {
+                if (window.Hls && Hls.isSupported()) {
+                    hlsInstance = new Hls();
+                    hlsInstance.loadSource(videoUrl);
+                    hlsInstance.attachMedia(video);
+                    hlsInstance.on(Hls.Events.MANIFEST_PARSED, function () {
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(err => console.log("Автозапуск заблокирован:", err));
+                        }
+                    });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = videoUrl;
+                    video.load();
+                    video.play().catch(err => console.log("Автозапуск заблокирован:", err));
+                } else {
+                    window.showToast('Формат HLS не поддерживается', 'fa-triangle-exclamation');
+                }
+            } else {
+                video.src = videoUrl;
+                video.load();
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => console.log("Автозапуск заблокирован:", error));
+                }
+            }
+            
+            document.getElementById('sel-speed').value = "1.0";
+            video.playbackRate = 1.0;
+
+            renderSourcesTabs('player');
+            window.renderEpisodesGrid('player');
+            
+            if(document.getElementById('view-player').classList.contains('hidden')) {
+                window.switchView('player');
+            }
+        }
+
+        window.closePlayer = function() { 
+            const video = document.getElementById('video-player');
+            video.pause();
+            if (hlsInstance) {
+                hlsInstance.destroy();
+                hlsInstance = null;
+            }
+            window.switchView('details'); 
+        }
+
+        window.changeVideoSpeed = function(speed) {
+            const video = document.getElementById('video-player');
+            if (video) {
+                video.playbackRate = parseFloat(speed);
+                window.showToast('Скорость: ' + speed + 'x', 'fa-gauge-high');
+            }
+        }
+
+        window.customConfirm = function(message, callback) {
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black/80 z-[200] flex items-center justify-center p-4 backdrop-blur-sm opacity-0 smooth-transition pointer-events-none';
+            overlay.innerHTML = `
+                <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-[2rem] max-w-xs w-full text-center shadow-2xl transform scale-95 smooth-transition" id="cc-box">
+                    <div class="w-16 h-16 bg-red-500/10 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <p class="text-white font-bold text-lg mb-6">${message}</p>
+                    <div class="flex flex-col gap-3">
+                        <button id="btn-confirm-yes" class="w-full py-3 rounded-xl font-bold bg-red-600 text-white hover:bg-red-500 active:scale-95 smooth-transition shadow-lg shadow-red-600/30">Да, удалить</button>
+                        <button id="btn-confirm-no" class="w-full py-3 rounded-xl font-bold bg-zinc-800 text-zinc-300 hover:bg-zinc-700 active:scale-95 smooth-transition">Отмена</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => { 
+                overlay.classList.remove('opacity-0', 'pointer-events-none'); 
+                overlay.querySelector('#cc-box').classList.remove('scale-95'); 
+            }, 10);
+            
+            const close = () => {
+                overlay.classList.add('opacity-0', 'pointer-events-none'); 
+                overlay.querySelector('#cc-box').classList.add('scale-95');
+                setTimeout(() => overlay.remove(), 300);
+            };
+            
+            document.getElementById('btn-confirm-no').onclick = close;
+            document.getElementById('btn-confirm-yes').onclick = () => { close(); callback(); };
+        }
+
+        window.showModal = function(id) { 
+            const el = document.getElementById(id); 
+            el.classList.remove('invisible', 'pointer-events-none'); 
+            el.classList.add('opacity-100');
+            const content = el.querySelector('.modal-content-anim');
+            if (content) {
+                content.classList.remove('translate-y-full', 'translate-y-10', 'scale-95');
+                content.classList.add('translate-y-0', 'scale-100');
+            }
+            document.body.classList.add('no-scroll');
+        }
+        
+        window.hideModal = function(id) { 
+            const el = document.getElementById(id); 
+            const content = el.querySelector('.modal-content-anim');
+            if (content) {
+                content.classList.remove('translate-y-0', 'scale-100');
+                if (content.classList.contains('bottom-sheet')) content.classList.add('translate-y-full');
+                else content.classList.add('translate-y-10', 'scale-95');
+            }
+            el.classList.remove('opacity-100');
+            setTimeout(() => {
+                el.classList.add('invisible', 'pointer-events-none'); 
+                document.body.classList.remove('no-scroll');
+            }, 300); 
+        }
+
+        window.toggleBookmarkModal = function() { 
+            if(!user) { window.showToast('Синхронизация...', 'fa-spinner fa-spin'); return; }
+            window.showModal('modal-bookmark'); 
+        }
+        
+        window.setBookmark = async function(status) {
+            if(!currentAnimeId || !user) return;
+            const existing = dbBookmarks.find(b => b.animeId === currentAnimeId && b.userId === user.uid);
+            
+            try {
+                if(status) {
+                    if(existing) { await updateDoc(doc(dbRef, 'artifacts', appIdStr, 'public', 'data', 'anime_bookmarks', existing.id), { status: status, updatedAt: Date.now() }); } 
+                    else { await addDoc(collection(dbRef, 'artifacts', appIdStr, 'public', 'data', 'anime_bookmarks'), { userId: user.uid, animeId: currentAnimeId, status: status, updatedAt: Date.now() }); }
+                    window.showToast('Статус обновлен!', 'fa-check');
+                } else {
+                    if(existing) await deleteDoc(doc(dbRef, 'artifacts', appIdStr, 'public', 'data', 'anime_bookmarks', existing.id));
+                    window.showToast('Удалено из списка', 'fa-trash');
+                }
+            } catch (e) { window.showToast('Ошибка сохранения', 'fa-xmark'); }
+            
+            window.hideModal('modal-bookmark');
+        }
+
+        function updateBookmarkIcon() {
+            const btn = document.getElementById('btn-bookmark-icon');
+            const myBm = dbBookmarks.find(b => b.animeId === currentAnimeId && b.userId === user?.uid);
+            if(myBm) { btn.className = 'fa-solid fa-bookmark text-primary-400'; } 
+            else { btn.className = 'fa-regular fa-bookmark text-white'; }
+        }
+
+        function updateStatsAndProfile() {
+            const myBms = dbBookmarks.filter(b => b.userId === user?.uid);
+            let counts = { watching:0, planned:0, completed:0, hold:0, dropped:0 };
+            myBms.forEach(b => { if(counts[b.status] !== undefined) counts[b.status]++; });
+            
+            document.getElementById('stat-watching').textContent = counts.watching;
+            document.getElementById('stat-planned').textContent = counts.planned;
+            document.getElementById('stat-completed').textContent = counts.completed;
+            document.getElementById('stat-hold').textContent = counts.hold;
+            document.getElementById('stat-dropped').textContent = counts.dropped;
+            
+            const total = myBms.length;
+            document.getElementById('stat-total').textContent = total;
+
+            const donut = document.getElementById('stat-donut-chart');
+            if(total === 0) {
+                donut.style.background = 'conic-gradient(#27272a 100%)';
+            } else {
+                const w = (counts.watching / total) * 100;
+                const p = (counts.planned / total) * 100;
+                const c = (counts.completed / total) * 100;
+                const h = (counts.hold / total) * 100;
+                const d = (counts.dropped / total) * 100;
+                
+                donut.style.background = `conic-gradient(
+                    #10b981 0% ${w}%, 
+                    #d946ef ${w}% ${w+p}%, 
+                    #3b82f6 ${w+p}% ${w+p+c}%, 
+                    #f59e0b ${w+p+c}% ${w+p+c+h}%, 
+                    #ef4444 ${w+p+c+h}% 100%
+                )`;
+            }
+        }
+
+        // НОВАЯ ЛОГИКА ВХОДА (Email + Пароль)
+        window.loginAdmin = async function() {
+            const email = document.getElementById('in-admin-email').value.trim();
+            const pass = document.getElementById('in-admin-pass').value.trim();
+            const btn = document.getElementById('btn-login-submit');
+            
+            if(!email || !pass) {
+                window.showToast('Введите Email и пароль', 'fa-xmark');
+                return;
+            }
+
+            btn.disabled = true; 
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                // Авторизация в Firebase
+                await signInWithEmailAndPassword(authRef, email, pass);
+                
+                window.hideModal('modal-auth'); 
+                window.showToast('Режим Автора включен', 'fa-unlock');
+                
+                document.getElementById('in-admin-email').value = '';
+                document.getElementById('in-admin-pass').value = '';
+            } catch (error) { 
+                window.showToast('Неверный Email или пароль', 'fa-xmark'); 
+            }
+            
+            btn.disabled = false; 
+            btn.innerHTML = 'Войти';
+        }
+        
+        // НОВАЯ ЛОГИКА ВЫХОДА (Сброс авторизации)
+        window.logoutAdmin = async function() {
+            try {
+                await signOut(authRef); // Выходим из аккаунта
+                window.showToast('Вы вышли из админки', 'fa-lock');
+                window.switchView('home');
+                // После выхода onAuthStateChanged сам залогинит нас анонимно
+            } catch(e) {
+                window.showToast('Ошибка при выходе', 'fa-xmark');
+            }
+        }
+
+        function checkAdmin() {
+            document.querySelectorAll('.admin-only').forEach(el => window.isAdmin ? el.classList.remove('hidden') : el.classList.add('hidden'));
+            const btnLogin = document.getElementById('btn-login-admin');
+            if (btnLogin) {
+                if (window.isAdmin) btnLogin.classList.add('hidden');
+                else btnLogin.classList.remove('hidden');
+            }
+        }
+
+        window.saveAnime = async function(e) {
+            e.preventDefault(); if(!window.isAdmin || !dbRef) return;
+            const btn = document.getElementById('btn-save-anime'); btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            const tagsRaw = document.getElementById('in-a-tags').value.split(',').map(t=>t.trim()).filter(t=>t);
+            const data = {
+                title: document.getElementById('in-a-title').value.trim(),
+                cover: document.getElementById('in-a-cover').value.trim(),
+                episodesStr: document.getElementById('in-a-episodes').value.trim(),
+                status: document.getElementById('in-a-status').value,
+                studio: document.getElementById('in-a-studio').value.trim(),
+                country: document.getElementById('in-a-country').value.trim(),
+                desc: document.getElementById('in-a-desc').value.trim(),
+                tags: tagsRaw, views: 0, rating: '0.0', createdAt: Date.now()
+            };
+            try {
+                await addDoc(collection(dbRef, 'artifacts', appIdStr, 'public', 'data', 'animes'), data);
+                window.hideModal('modal-add-anime'); window.showToast('Аниме добавлено!', 'fa-check');
+                document.getElementById('in-a-title').form.reset();
+            } catch(e) { window.showToast('Ошибка сохранения', 'fa-xmark'); }
+            btn.disabled = false; btn.innerHTML = 'Загрузить в базу';
+        }
+
+        window.saveEpisode = async function(e) {
+            e.preventDefault(); 
+            if(!window.isAdmin || !currentAnimeId) return;
+            
+            const btn = document.getElementById('btn-save-ep'); 
+            btn.disabled = true; 
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            
+            const numVal = document.getElementById('in-ep-num').value.trim();
+            const sourceVal = document.getElementById('in-ep-source').value.trim();
+            const urlVal = document.getElementById('in-ep-url').value.trim();
+
+            const data = {
+                animeId: currentAnimeId,
+                num: numVal,
+                source: sourceVal,
+                url: urlVal,
+                createdAt: Date.now()
+            };
+
+            const localEp = { id: 'local_' + Date.now(), ...data };
+
+            try {
+                if (dbRef) {
+                    await addDoc(collection(dbRef, 'artifacts', appIdStr, 'public', 'data', 'anime_episodes'), data);
+                }
+            } catch(err) {
+                console.log("Firebase offline, using local store");
+            }
+
+            dbEpisodes.push(localEp);
+            dbEpisodes.sort((a,b) => parseInt(a.num) - parseInt(b.num));
+
+            currentSource = sourceVal;
+            window.hideModal('modal-add-episode'); 
+            window.showToast('Серия успешно добавлена!', 'fa-check');
+            
+            document.getElementById('in-ep-num').value = ''; 
+            document.getElementById('in-ep-url').value = '';
+
+            btn.disabled = false; 
+            btn.innerHTML = 'Загрузить';
+        }
+
+        window.deleteCurrentAnime = function() {
+            if(!window.isAdmin || !currentAnimeId || !dbRef) return;
+            window.customConfirm('Точно удалить этот тайтл навсегда?', async () => {
+                try {
+                    await deleteDoc(doc(dbRef, 'artifacts', appIdStr, 'public', 'data', 'animes', currentAnimeId));
+                    window.switchView('home'); window.showToast('Удалено', 'fa-trash');
+                } catch(e) { window.showToast('Ошибка удаления', 'fa-xmark'); }
+            });
+        }
+        
+        window.deleteEpisode = function(epId) {
+            if(!window.isAdmin) return;
+            window.customConfirm('Удалить эту серию?', async () => {
+                try { 
+                    if (epId.startsWith('local_')) {
+                        dbEpisodes = dbEpisodes.filter(e => e.id !== epId);
+                    } else if (dbRef) {
+                        await deleteDoc(doc(dbRef, 'artifacts', appIdStr, 'public', 'data', 'anime_episodes', epId)); 
+                    }
+                    if(currentAnimeId) {
+                        renderSourcesTabs('watch');
+                        window.renderEpisodesGrid('watch');
+                    }
+                    window.showToast('Серия удалена', 'fa-trash'); 
+                } catch(e) { window.showToast('Ошибка удаления', 'fa-xmark'); }
+            });
+        }
+
+        window.showToast = function(msg, icon) {
+            const t = document.getElementById('toast'); document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').className = `fa-solid ${icon}`;
+            t.classList.remove('-translate-y-10', 'opacity-0'); setTimeout(() => t.classList.add('-translate-y-10', 'opacity-0'), 3000);
+        }
+    </script>
+</body>
+</html>
+
+
