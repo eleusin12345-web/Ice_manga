@@ -1,0 +1,21 @@
+Тяжёлые зависимости (устанавливаются через npm install)
+node_modules/
+
+Секретные файлы и ключи окружения
+.env
+.env.local
+.env.*.local
+
+Служебные файлы и логи Firebase
+firebase-debug.log*
+firestore-debug.log*
+.firebase/
+
+Скомпилированный код (папки сборки React / Vite / Vue)
+dist/
+build/
+
+Настройки редакторов и системы
+.DS_Store
+.vscode/
+.idea/
